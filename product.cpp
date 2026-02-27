@@ -75,8 +75,8 @@ cina readSum() {
                 break;
             }
             if (temp_grn < 0 || temp_cop < 0 || temp_qty < 0) {
-                std::cout << "Попередження: виявлено некоректні (від'ємні) значення у файлі. Рядок пропущено." << std::endl;
-                continue; // Пропускаємо подальший код у циклі і йдемо на наступну ітерацію
+                std::cout << "виявлено від'ємні значення у файлі." << std::endl;
+                continue;
             }
             data[j][0] = temp_grn;
             data[j][1] = temp_cop;
@@ -108,8 +108,8 @@ void showRoundedSum() {
     cina sum_c = readSum();
     cina r_sum = {0,0};
     r_sum = add({sum_c.grn, 0}, {0, round(sum_c.cop)});
-
     showSum(sum_c);
+
     std::cout << "Сума до оплати: ";
     showCina(r_sum);
     std::cout << std::endl;
