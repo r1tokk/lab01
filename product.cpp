@@ -56,7 +56,7 @@ cina readSum() {
 
     file = fopen("../cina.txt", "r");
 
-    if (file == NULL) {
+    if (file == nullptr) {
         std::cout << "Помилка відкриття файлу" << std::endl;
         return {0,0};
     }
