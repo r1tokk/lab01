@@ -7,15 +7,13 @@
 #include <iostream>
 
 
-short int round(short int cop) {
-    if (cop % 10 <= 3) {
-        return cop - (cop % 10);
+void round(cina &c_1) {
+    if (c_1.cop % 10 <= 3) {
+        c_1.cop = c_1.cop - (c_1.cop % 10);
     }
-    return (cop / 10) * 10 + 10 ;
+    c_1.cop = (c_1.cop / 10) * 10 + 10 ;
 }
-cina add(cina c_1, cina c_2) {
-    cina c_3;
-
+void add(cina &c_1, cina &c_2, cina &c_3) {
     c_3.grn = c_1.grn + c_2.grn;
     c_3.cop = c_1.cop + c_2.cop;
 
@@ -23,34 +21,29 @@ cina add(cina c_1, cina c_2) {
         c_3.grn = c_3.grn + (c_3.cop / 100);
         c_3.cop = c_3.cop % 100;
     }
-
-    return c_3;
 }
 
-cina multiply(cina c_1, short int n) {
-    cina c_2;
-    c_2.grn = c_1.grn * n;
-    c_2.cop = c_1.cop * n;
+void multiply(cina &c_1, short int n) {
+    c_1.grn = c_1.grn * n;
+    c_1.cop = c_1.cop * n;
 
-    if (c_2.cop >= 100) {
-        c_2.grn = c_2.grn + c_2.cop / 100;
-        c_2.cop = c_2.cop % 100;
+    if (c_1.cop >= 100) {
+        c_1.grn = c_1.grn + c_1.cop / 100;
+        c_1.cop = c_1.cop % 100;
     }
-
-    return c_2;
 }
 
 void showCina(cina c) {
     std::cout << c.grn << " грн " << c.cop << " коп."<< std::endl;
 }
 
-void showSum(cina sum_c) {
+void showSum(cina &sum_c) {
     std::cout << "Загальна сума: ";
     showCina(sum_c);
     std::cout << std::endl;
 }
 
-cina readSum() {
+void readSum(cina &sum_c) {
     int data[90][3];
     FILE *file;
 
@@ -58,7 +51,7 @@ cina readSum() {
 
     if (file == nullptr) {
         std::cout << "Помилка відкриття файлу" << std::endl;
-        return {0,0};
+        return;
     }
 
     int rows_read = 0;
@@ -90,28 +83,29 @@ cina readSum() {
 
     fclose(file);
 
-    cina sum_c = {0, 0};
+
     for (int i = 0; i < rows_read; i++) {
         cina c = {0, 0};
 
         c.grn = data[i][0];
         c.cop = data[i][1];
 
-        c = multiply(c, data[i][2]);
+        multiply(c, data[i][2]);
 
-        sum_c = add(c, sum_c);
+        add(c, sum_c, sum_c);
     }
-    return sum_c;
 }
 
 void showRoundedSum() {
-    cina sum_c = readSum();
-    cina r_sum = {0,0};
-    r_sum = add({sum_c.grn, 0}, {0, round(sum_c.cop)});
+    cina sum_c = {0, 0};
+    readSum(sum_c);
+
     showSum(sum_c);
+
+    cina r_sum = sum_c;
+    round(r_sum);
 
     std::cout << "Сума до оплати: ";
     showCina(r_sum);
-    std::cout << std::endl;
     std::cout << std::endl;
 }
