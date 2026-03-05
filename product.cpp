@@ -13,6 +13,10 @@ void round(cina &c_1) {
     }else {
         c_1.cop = c_1.cop - c_1.cop % 10 + 10 ;
     }
+    if (c_1.cop >= 100) {
+        c_1.grn = c_1.grn + (c_1.cop / 100);
+        c_1.cop = c_1.cop % 100;
+    }
 }
 void add(cina &c_1, cina &c_2, cina &c_3) {
     c_3.grn = c_1.grn + c_2.grn;
@@ -53,37 +57,22 @@ void readSum(cina &sum_c) {
         std::cout << "Помилка відкриття файлу" << std::endl;
         return;
     }
+    int temp_grn, temp_cop, temp_qty;
+    while (fscanf(file, "%*s %d %d %d", &temp_grn, &temp_cop, &temp_qty) == 3){
 
-    int rows_read = 0;
-
-    for (int i = 0; i < 90; i++) {
-        bool row_complete = true;
-
-        for (int j = 0; j < 3; j++) {
-            int temp_grn, temp_cop, temp_qty;
-            int result = fscanf(file, "%*s %d %d %d", &temp_grn, &temp_cop, &temp_qty);
-
-            if (result != 3) {
-                row_complete = false;
-                break;
-            }
-            if (temp_grn < 0 || temp_cop < 0 || temp_qty < 0) {
-                std::cout << "виявлено від'ємні значення у файлі." << std::endl;
-                continue;
-            }
-            cina c = {0, 0};
-            c.grn = temp_grn;
-            c.cop = temp_cop;
-
-            multiply(c, temp_qty);
-
-            add(c, sum_c, sum_c);
+        if (temp_grn < 0 || temp_cop < 0 || temp_qty < 0) {
+            std::cout << "виявлено від'ємні значення у файлі." << std::endl;
+            continue;
         }
-        if (!row_complete) {
-            break;
-        }
-        rows_read++;
+        cina c = {0, 0};
+        c.grn = temp_grn;
+        c.cop = temp_cop;
+
+        multiply(c, temp_qty);
+
+        add(c, sum_c, sum_c);
     }
+
 
     fclose(file);
 }
