@@ -10,8 +10,14 @@
 void round(cina &c_1) {
     if (c_1.cop % 10 <= 3) {
         c_1.cop = c_1.cop - (c_1.cop % 10);
+    }else {
+        c_1.cop = c_1.cop - c_1.cop % 10 + 10 ;
     }
-    c_1.cop = (c_1.cop / 10) * 10 + 10 ;
+
+    if (c_1.cop >= 100) {
+        c_1.grn = c_1.grn + (c_1.cop / 100);
+        c_1.cop = c_1.cop % 100;
+    }
 }
 void add(cina &c_1, cina &c_2, cina &c_3) {
     c_3.grn = c_1.grn + c_2.grn;
@@ -23,7 +29,7 @@ void add(cina &c_1, cina &c_2, cina &c_3) {
     }
 }
 
-void multiply(cina &c_1, short int n) {
+void multiply(cina &c_1, int n) {
     c_1.grn = c_1.grn * n;
     c_1.cop = c_1.cop * n;
 
@@ -44,10 +50,9 @@ void showSum(cina &sum_c) {
 }
 
 void readSum(cina &sum_c) {
-    int data[90][3];
     FILE *file;
 
-    file = fopen("../cina.txt", "r");
+    file = fopen("./cina.txt", "r");
 
     if (file == nullptr) {
         std::cout << "Помилка відкриття файлу" << std::endl;
@@ -71,9 +76,13 @@ void readSum(cina &sum_c) {
                 std::cout << "виявлено від'ємні значення у файлі." << std::endl;
                 continue;
             }
-            data[j][0] = temp_grn;
-            data[j][1] = temp_cop;
-            data[j][2] = temp_qty;
+            cina c = {0, 0};
+            c.grn = temp_grn;
+            c.cop = temp_cop;
+
+            multiply(c, temp_qty);
+
+            add(c, sum_c, sum_c);
         }
         if (!row_complete) {
             break;
@@ -82,18 +91,6 @@ void readSum(cina &sum_c) {
     }
 
     fclose(file);
-
-
-    for (int i = 0; i < rows_read; i++) {
-        cina c = {0, 0};
-
-        c.grn = data[i][0];
-        c.cop = data[i][1];
-
-        multiply(c, data[i][2]);
-
-        add(c, sum_c, sum_c);
-    }
 }
 
 void showRoundedSum() {
