@@ -13,11 +13,6 @@ void round(cina &c_1) {
     }else {
         c_1.cop = c_1.cop - c_1.cop % 10 + 10 ;
     }
-
-    if (c_1.cop >= 100) {
-        c_1.grn = c_1.grn + (c_1.cop / 100);
-        c_1.cop = c_1.cop % 100;
-    }
 }
 void add(cina &c_1, cina &c_2, cina &c_3) {
     c_3.grn = c_1.grn + c_2.grn;
