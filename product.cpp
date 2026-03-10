@@ -18,13 +18,13 @@ void round(cina &c_1) {
         c_1.cop = c_1.cop % 100;
     }
 }
-void add(cina &c_1, cina &c_2, cina &c_3) {
-    c_3.grn = c_1.grn + c_2.grn;
-    c_3.cop = c_1.cop + c_2.cop;
+void add(cina &c_1, cina &c_2, cina &result) {
+    result.grn = c_1.grn + c_2.grn;
+    result.cop = c_1.cop + c_2.cop;
 
-    if (c_3.cop >= 100) {
-        c_3.grn = c_3.grn + (c_3.cop / 100);
-        c_3.cop = c_3.cop % 100;
+    if (result.cop >= 100) {
+        result.grn = result.grn + (result.cop / 100);
+        result.cop = result.cop % 100;
     }
 }
 
@@ -42,12 +42,6 @@ void showCina(cina c) {
     std::cout << c.grn << " грн " << c.cop << " коп."<< std::endl;
 }
 
-void showSum(cina &sum_c) {
-    std::cout << "Загальна сума: ";
-    showCina(sum_c);
-    std::cout << std::endl;
-}
-
 void readSum(cina &sum_c) {
     FILE *file;
 
@@ -58,8 +52,7 @@ void readSum(cina &sum_c) {
         return;
     }
     int temp_grn, temp_cop, temp_qty;
-    while (fscanf(file, "%*s %d %d %d", &temp_grn, &temp_cop, &temp_qty) == 3){
-
+    while (fscanf(file, "%*s %d %hd %d", &temp_grn, &temp_cop, &temp_qty) == 3){
         if (temp_grn < 0 || temp_cop < 0 || temp_qty < 0) {
             std::cout << "виявлено від'ємні значення у файлі." << std::endl;
             continue;
@@ -72,20 +65,18 @@ void readSum(cina &sum_c) {
 
         add(c, sum_c, sum_c);
     }
-
-
     fclose(file);
 }
 
 void showRoundedSum() {
     cina sum_c = {0, 0};
     readSum(sum_c);
-
-    showSum(sum_c);
+    std::cout << "Загальна сума: ";
+    showCina(sum_c);
+    std::cout << std::endl;
 
     cina r_sum = sum_c;
     round(r_sum);
-
     std::cout << "Сума до оплати: ";
     showCina(r_sum);
     std::cout << std::endl;

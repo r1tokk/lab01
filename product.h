@@ -9,12 +9,10 @@ struct cina {
     short int cop;
 };
 void round(cina &c_1);
-void add(cina &c_1, cina &c_2, cina &c_3);
+void add(cina &c_1, cina &c_2, cina &result);
 void multiply(cina &c_1, int n);
 void showCina(cina c);
-void showSum(cina &sum_c);
 void readSum(cina &sum_c);
-
 void showRoundedSum();
 
 
